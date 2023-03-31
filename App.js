@@ -51,20 +51,30 @@ const styles = StyleSheet.create({
    },
    input: {
       color: 'blue',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: '#fff',
+      padding: 5,
+      marginTop: 10,
+      marginHorizontal: 30,
+      textAlign:'center'
+
    },
    text: {
       fontSize: 20,
+      textAlign: 'center',
    },
    innerBox: {
       borderStyle: 'solid',
       borderColor: 'tomato',
       borderWidth: 1,
       padding: 4,
+      marginHorizontal: 30,
    },
    image: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center',
+      // alignItems: 'center',
       width: 430,
    },
 });
