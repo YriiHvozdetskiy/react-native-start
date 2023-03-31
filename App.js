@@ -4,33 +4,39 @@ import {
    View,
    TextInput,
    KeyboardAvoidingView, // новий імпорт
-   Platform, Text, ImageBackground, // новий імпорт
+   Platform,
+   Text,
+   ImageBackground,
+   TouchableWithoutFeedback, // імпорт компонента обгортки
+   Keyboard, // новий імпорт
 } from "react-native";
 
 export default function App () {
    const [value, setValue] = useState("");
    const inputHandler = (text) => setValue(text);
    return (
-      <View style={styles.container}>
-         <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-         >
-            <ImageBackground
-               source={require('./assets/photo-bg.jpg')}
-               style={styles.image}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+         <View style={styles.container}>
+            <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
+               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-               <View style={styles.innerBox}>
-                  <Text style={styles.text}>hello world</Text>
-               </View>
-               <TextInput
-                  placeholder="Type text"
-                  value={value}
-                  onChangeText={inputHandler}
-                  style={styles.input}
-               />
-            </ImageBackground>
-         </KeyboardAvoidingView>
-      </View>
+               <ImageBackground
+                  source={require('./assets/photo-bg.jpg')}
+                  style={styles.image}
+               >
+                  <View style={styles.innerBox}>
+                     <Text style={styles.text}>hello world</Text>
+                  </View>
+                  <TextInput
+                     placeholder="Type text"
+                     value={value}
+                     onChangeText={inputHandler}
+                     style={styles.input}
+                  />
+               </ImageBackground>
+            </KeyboardAvoidingView>
+         </View>
+      </TouchableWithoutFeedback>
    );
 }
 
