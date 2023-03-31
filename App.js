@@ -8,12 +8,21 @@ import {
    Text,
    ImageBackground,
    TouchableWithoutFeedback, // імпорт компонента обгортки
-   Keyboard, // новий імпорт
+   Keyboard, Alert, Button, // новий імпорт
 } from "react-native";
 
 export default function App () {
+   const [name, setName] = useState("");
+   const [password, setPassword] = useState("");
    const [value, setValue] = useState("");
    const inputHandler = (text) => setValue(text);
+   const nameHandler = (text) => setName(text);
+   const passwordHandler = (text) => setPassword(text);
+
+   const onLogin = () => {
+      Alert.alert("Credentials", `${name} + ${password}`);
+   };
+
    return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
          <View style={styles.container}>
@@ -34,6 +43,26 @@ export default function App () {
                      style={styles.input}
                      placeholderTextColor={'#fff'}
                   />
+                  <View
+                     style={styles.form}
+                  >
+                     <TextInput
+                        value={name}
+                        onChangeText={nameHandler}
+                        placeholder="Username"
+                        style={styles.input}
+                        placeholderTextColor={'#fff'}
+                     />
+                     <TextInput
+                        value={password}
+                        onChangeText={passwordHandler}
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        style={styles.input}
+                        placeholderTextColor={'#fff'}
+                     />
+                     <Button title={"Login"} style={styles.input} onPress={onLogin}/>
+                  </View>
                </ImageBackground>
             </KeyboardAvoidingView>
          </View>
@@ -56,9 +85,8 @@ const styles = StyleSheet.create({
       borderColor: '#fff',
       padding: 5,
       marginTop: 10,
-      marginHorizontal: 30,
-      textAlign:'center'
-
+      // marginHorizontal: 30,
+      textAlign: 'center',
    },
    text: {
       fontSize: 20,
@@ -76,5 +104,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       // alignItems: 'center',
       width: 430,
+   },
+   form: {
+      marginHorizontal: 30,
    },
 });
