@@ -32,6 +32,7 @@ export default function App () {
                      value={value}
                      onChangeText={inputHandler}
                      style={styles.input}
+                     placeholderTextColor={'#fff'}
                   />
                </ImageBackground>
             </KeyboardAvoidingView>
