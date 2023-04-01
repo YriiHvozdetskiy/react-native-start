@@ -8,7 +8,7 @@ import {
    Text,
    ImageBackground,
    TouchableWithoutFeedback, // імпорт компонента обгортки
-   Keyboard, Alert, Button, // новий імпорт
+   Keyboard, Alert, Button, TouchableOpacity, // новий імпорт
 } from "react-native";
 
 export default function App () {
@@ -20,7 +20,7 @@ export default function App () {
    const passwordHandler = (text) => setPassword(text);
 
    const onLogin = () => {
-      Alert.alert("Credentials", `${name} + ${password}`);
+      Alert.alert("Credentials", `${name} + ${password} + ${value}`);
    };
 
    return (
@@ -36,7 +36,7 @@ export default function App () {
                   <View style={styles.innerBox}>
                      <Text style={styles.text}>hello world</Text>
                   </View>
-                  <TextInput
+                  <TextInput // дані з цього інпута візьмуться з цього інпута, томущо в onLogin є його value
                      placeholder="Type text"
                      value={value}
                      onChangeText={inputHandler}
@@ -57,11 +57,22 @@ export default function App () {
                         value={password}
                         onChangeText={passwordHandler}
                         placeholder="Password"
-                        secureTextEntry={true}
+                        secureTextEntry={true} // скриваєм ведені дані (password)
                         style={styles.input}
                         placeholderTextColor={'#fff'}
                      />
-                     <Button title={"Login"} style={styles.input} onPress={onLogin}/>
+                     <Button
+                        title={"Login"} // текст в кнопці
+                        style={styles.input}
+                        onPress={onLogin}
+                     />
+                     <TouchableOpacity
+                        style={styles.button}
+                        activeOpacity={0.8} // на скільки буде ставати кнопка прозорою при натискані
+                        onPress={onLogin}
+                     >
+                        <Text style={styles.buttonText}>Sign In</Text>
+                     </TouchableOpacity>
                   </View>
                </ImageBackground>
             </KeyboardAvoidingView>
@@ -75,7 +86,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: "#fff",
       alignItems: "center",
-      justifyContent: "flex-end",
+      // justifyContent: "flex-end",
       paddingBottom: 30,
    },
    input: {
@@ -107,5 +118,16 @@ const styles = StyleSheet.create({
    },
    form: {
       marginHorizontal: 30,
+      gap: 15,
+   },
+   button: {
+      backgroundColor: 'pink',
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 20,
+   },
+   buttonText: {
+      color: 'green',
    },
 });
