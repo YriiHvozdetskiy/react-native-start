@@ -125,11 +125,26 @@ const styles = StyleSheet.create({
       gap: 15,
    },
    button: {
-      backgroundColor: Platform.OS === "ios" ? 'blue' : 'red',
       height: 40,
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: 20,
+      borderStyle: 'solid',
+      borderWidth: 2,
+
+      ...Platform.select({
+         ios: {
+            backgroundColor: 'blue',
+            borderColor: 'red',
+         },
+         android: {
+            backgroundColor: 'red',
+            borderColor: '#fff',
+         },
+      }),
+      // Альтернатива Platform.select
+      // backgroundColor: Platform.OS === "ios" ? 'blue' : 'red',
+      // borderColor: Platform.OS === "ios" ? 'red' : '#fff',
    },
    buttonText: {
       color: '#fff',
