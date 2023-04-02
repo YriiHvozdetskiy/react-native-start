@@ -8,7 +8,7 @@ import {
    Text,
    ImageBackground,
    TouchableWithoutFeedback, // імпорт компонента обгортки
-   Keyboard, Alert, Button, TouchableOpacity, // новий імпорт
+   Keyboard, Alert, Button, TouchableOpacity, Pressable, // новий імпорт
 } from "react-native";
 
 export default function App () {
@@ -22,6 +22,7 @@ export default function App () {
    const onLogin = () => {
       Alert.alert("Credentials", `${name} + ${password} + ${value}`);
    };
+   console.log('Platform', Platform.OS);
 
    return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -63,16 +64,19 @@ export default function App () {
                      />
                      <Button
                         title={"Login"} // текст в кнопці
-                        style={styles.input}
                         onPress={onLogin}
+                        color={Platform.OS === "ios" ? 'blue' : 'blue'} // кнопка немає style і під ios андроід виглядає по різному
                      />
                      <TouchableOpacity
                         style={styles.button}
                         activeOpacity={0.8} // на скільки буде ставати кнопка прозорою при натискані
-                        onPress={onLogin}
+                        // onPress={onLogin}
                      >
                         <Text style={styles.buttonText}>Sign In</Text>
                      </TouchableOpacity>
+                     <Pressable style={styles.btn}>
+                        <Text style={styles.buttonText}>Save</Text>
+                     </Pressable>
                   </View>
                </ImageBackground>
             </KeyboardAvoidingView>
@@ -121,13 +125,22 @@ const styles = StyleSheet.create({
       gap: 15,
    },
    button: {
-      backgroundColor: 'pink',
+      backgroundColor: Platform.OS === "ios" ? 'blue' : 'red',
       height: 40,
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: 20,
    },
    buttonText: {
-      color: 'green',
+      color: '#fff',
+   },
+   btn: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      borderRadius: 4,
+      elevation: 3,
+      backgroundColor: 'black',
    },
 });
