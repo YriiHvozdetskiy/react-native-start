@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {
    StyleSheet,
    View,
@@ -10,12 +10,33 @@ import {
    TouchableWithoutFeedback, // імпорт компонента обгортки
    Keyboard, Alert, Button, TouchableOpacity, Pressable,
 } from "react-native";
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
+
+const FONT_FAMILY_PRIMARY = 'Roboto-Regular';
+const FONT_FAMILY_SECONDARY = 'Montserrat-Medium';
+const FONT_FAMILY_TERTIARY = 'Raleway-Regular';
 
 export default function App () {
    const [name, setName] = useState("");
    const [password, setPassword] = useState("");
    const [value, setValue] = useState("");
    const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+   const [fontsLoaded] = useFonts({
+      [FONT_FAMILY_PRIMARY]: require('./assets/fonts/Roboto-Regular.ttf'),
+      [FONT_FAMILY_SECONDARY]: require('./assets/fonts/Montserrat-Medium.ttf'),
+      [FONT_FAMILY_TERTIARY]: require('./assets/fonts/Raleway-Regular.ttf'),
+   });
+
+   const onLayoutRootView = useCallback(async () => {
+      if (fontsLoaded) {
+         await SplashScreen.hideAsync();
+      }
+   }, [fontsLoaded]);
+
+   if (!fontsLoaded) return null;
 
    const inputHandler = (text) => setValue(text);
 
@@ -32,12 +53,14 @@ export default function App () {
 
       Keyboard.dismiss();
    };
+
    console.log('Platform', Platform.OS);
+
    return (
-      <TouchableWithoutFeedback
-         onPress={keyboardHiddenHandler} // ховаєм клавіатуру, змінюєм відступ форми
-      >
-         <View style={styles.container}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+         <TouchableWithoutFeedback
+            onPress={keyboardHiddenHandler} // ховаєм клавіатуру, змінюєм відступ форми
+         >
             <ImageBackground
                source={require('./assets/photo-bg.jpg')}
                style={styles.image}
@@ -95,8 +118,8 @@ export default function App () {
                   </View>
                </KeyboardAvoidingView>
             </ImageBackground>
-         </View>
-      </TouchableWithoutFeedback>
+         </TouchableWithoutFeedback>
+      </View>
    );
 }
 
@@ -109,6 +132,7 @@ const styles = StyleSheet.create({
       paddingBottom: 30,
    },
    input: {
+      fontFamily: FONT_FAMILY_PRIMARY,
       color: 'blue',
       borderStyle: 'solid',
       borderWidth: 1,
@@ -119,8 +143,9 @@ const styles = StyleSheet.create({
       textAlign: 'center',
    },
    text: {
-      fontSize: 20,
       textAlign: 'center',
+      fontFamily: FONT_FAMILY_SECONDARY,
+      fontSize: 50,
    },
    innerBox: {
       borderStyle: 'solid',
@@ -163,6 +188,8 @@ const styles = StyleSheet.create({
       // borderColor: Platform.OS === "ios" ? 'red' : '#fff',
    },
    buttonText: {
+      fontFamily: FONT_FAMILY_TERTIARY,
+      fontWeight: 400,
       color: '#fff',
    },
    btn: {
