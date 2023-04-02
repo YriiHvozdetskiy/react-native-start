@@ -8,31 +8,42 @@ import {
    Text,
    ImageBackground,
    TouchableWithoutFeedback, // імпорт компонента обгортки
-   Keyboard, Alert, Button, TouchableOpacity, Pressable, // новий імпорт
+   Keyboard, Alert, Button, TouchableOpacity, Pressable,
 } from "react-native";
 
 export default function App () {
    const [name, setName] = useState("");
    const [password, setPassword] = useState("");
    const [value, setValue] = useState("");
+   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
    const inputHandler = (text) => setValue(text);
+
    const nameHandler = (text) => setName(text);
+
    const passwordHandler = (text) => setPassword(text);
 
    const onLogin = () => {
       Alert.alert("Credentials", `${name} + ${password} + ${value}`);
    };
-   console.log('Platform', Platform.OS);
+   // ховаєм клавіатуру, змінюєм відступ форми
+   const keyboardHiddenHandler = () => {
+      setIsShowKeyboard(false);
 
+      Keyboard.dismiss();
+   };
+   console.log('Platform', Platform.OS);
    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback
+         onPress={keyboardHiddenHandler} // ховаєм клавіатуру, змінюєм відступ форми
+      >
          <View style={styles.container}>
-            <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
-               behavior={Platform.OS === "ios" ? "padding" : "height"}
+            <ImageBackground
+               source={require('./assets/photo-bg.jpg')}
+               style={styles.image}
             >
-               <ImageBackground
-                  source={require('./assets/photo-bg.jpg')}
-                  style={styles.image}
+               <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
+                  behavior={Platform.OS === "ios" ? "padding" : null} // height - не працює чогось для Андроід
                >
                   <View style={styles.innerBox}>
                      <Text style={styles.text}>hello world</Text>
@@ -43,9 +54,10 @@ export default function App () {
                      onChangeText={inputHandler}
                      style={styles.input}
                      placeholderTextColor={'#fff'}
+                     onFocus={() => setIsShowKeyboard(true)} // зімінюжм відступ форми
                   />
                   <View
-                     style={styles.form}
+                     style={{...styles.form, marginBottom: isShowKeyboard ? 20 : 100}} // змінюєм конкретні стилі форми
                   >
                      <TextInput
                         value={name}
@@ -53,6 +65,7 @@ export default function App () {
                         placeholder="Username"
                         style={styles.input}
                         placeholderTextColor={'#fff'}
+                        onFocus={() => setIsShowKeyboard(true)} // зімінюжм відступ форми
                      />
                      <TextInput
                         value={password}
@@ -61,6 +74,7 @@ export default function App () {
                         secureTextEntry={true} // скриваєм ведені дані (password)
                         style={styles.input}
                         placeholderTextColor={'#fff'}
+                        onFocus={() => setIsShowKeyboard(true)} // зімінюжм відступ форми
                      />
                      <Button
                         title={"Login"} // текст в кнопці
@@ -71,6 +85,7 @@ export default function App () {
                         style={styles.button}
                         activeOpacity={0.8} // на скільки буде ставати кнопка прозорою при натискані
                         // onPress={onLogin}
+                        onPress={keyboardHiddenHandler} // ховаєм клавіатуру, змінюєм відступ форми
                      >
                         <Text style={styles.buttonText}>Sign In</Text>
                      </TouchableOpacity>
@@ -78,8 +93,8 @@ export default function App () {
                         <Text style={styles.buttonText}>Save</Text>
                      </Pressable>
                   </View>
-               </ImageBackground>
-            </KeyboardAvoidingView>
+               </KeyboardAvoidingView>
+            </ImageBackground>
          </View>
       </TouchableWithoutFeedback>
    );
@@ -116,13 +131,14 @@ const styles = StyleSheet.create({
    },
    image: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       // alignItems: 'center',
       width: 430,
    },
    form: {
       marginHorizontal: 30,
       gap: 15,
+      // marginBottom: 100,
    },
    button: {
       height: 40,
