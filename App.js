@@ -8,17 +8,33 @@ import {
    Text,
    ImageBackground,
    TouchableWithoutFeedback, // імпорт компонента обгортки
-   Keyboard, Alert, Button, TouchableOpacity, Pressable,
+   Keyboard, Alert, Button, TouchableOpacity, Pressable, FlatList,
 } from "react-native";
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {Header} from './components/Header';
+import {ListItem} from './components/ListItem';
 
 SplashScreen.preventAutoHideAsync();
 
 const FONT_FAMILY_PRIMARY = 'Roboto-Regular';
 const FONT_FAMILY_SECONDARY = 'Montserrat-Medium';
 const FONT_FAMILY_TERTIARY = 'Raleway-Regular';
+
+const todo = [
+   {
+      text: "Create Todo App",
+      id: 2,
+   },
+   {
+      text: "Play football",
+      id: 1,
+   },
+   {
+      text: "Buy ice cream",
+      id: 3,
+   },
+]
 
 export default function App() {
    const [name, setName] = useState("");
@@ -30,6 +46,7 @@ export default function App() {
       [FONT_FAMILY_SECONDARY]: require('./assets/fonts/Montserrat-Medium.ttf'),
       [FONT_FAMILY_TERTIARY]: require('./assets/fonts/Raleway-Regular.ttf'),
    });
+   const [list, setList] = useState(todo);
 
    const onLayoutRootView = useCallback(async () => {
       if (fontsLoaded) {
@@ -55,6 +72,10 @@ export default function App() {
       Keyboard.dismiss();
    };
 
+   const deleteHandler = (id) => {
+      setList(prevState => prevState?.filter(item => item?.id !== id))
+   }
+
    console.log('Platform', Platform.OS);
 
    return (
@@ -70,6 +91,16 @@ export default function App() {
                <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
                   behavior={Platform.OS === "ios" ? "padding" : null} // height - не працює чогось для Андроід
                >
+                  <FlatList
+                     style={styles.list}
+                     data={list} // масив
+                     renderItem={({item}) =>
+                        <ListItem
+                           item={item}
+                           deleteHandler={deleteHandler}
+                        />} // розмітка
+                     // <Text style={styles.itemList}>{item.text}</Text>}
+                  />
                   <View style={styles.innerBox}>
                      <Text style={styles.text}>hello world</Text>
                   </View>
@@ -203,5 +234,16 @@ const styles = StyleSheet.create({
       borderRadius: 4,
       elevation: 3,
       backgroundColor: 'black',
+   },
+   list: {
+      // display:'flex',
+      // gap:30,
+      marginHorizontal: 40,
+   },
+   itemList: {
+      color: '#fff',
+      fontSize: 15,
+      // marginBottom:40
+      padding: 10,
    },
 });
