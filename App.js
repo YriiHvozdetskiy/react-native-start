@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import {Header} from './components/Header';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,7 +20,7 @@ const FONT_FAMILY_PRIMARY = 'Roboto-Regular';
 const FONT_FAMILY_SECONDARY = 'Montserrat-Medium';
 const FONT_FAMILY_TERTIARY = 'Raleway-Regular';
 
-export default function App () {
+export default function App() {
    const [name, setName] = useState("");
    const [password, setPassword] = useState("");
    const [value, setValue] = useState("");
@@ -65,6 +66,7 @@ export default function App () {
                source={require('./assets/photo-bg.jpg')}
                style={styles.image}
             >
+               <Header/>
                <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
                   behavior={Platform.OS === "ios" ? "padding" : null} // height - не працює чогось для Андроід
                >
@@ -158,7 +160,8 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-end',
       // alignItems: 'center',
-      width: 430,
+      // width: 430,
+      width: '100%',
    },
    form: {
       marginHorizontal: 30,
