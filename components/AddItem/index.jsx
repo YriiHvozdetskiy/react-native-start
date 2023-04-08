@@ -1,4 +1,4 @@
-import {styles} from './AddItemStyle';
+import {styles} from './style';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from 'react';
 

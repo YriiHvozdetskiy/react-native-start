@@ -1,5 +1,5 @@
 import {Text, View} from 'react-native';
-import {styles} from './HeaderStyle'
+import {styles} from './style'
 
 export const Header = () => {
 

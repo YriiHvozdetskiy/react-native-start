@@ -1,4 +1,4 @@
-import {styles} from './ListItemStyle'
+import {styles} from './style'
 import {Text, TouchableOpacity} from 'react-native';
 
 export const ListItem = ({item, deleteHandler}) => {
