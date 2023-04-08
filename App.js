@@ -14,6 +14,7 @@ import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {Header} from './components/Header';
 import {ListItem} from './components/ListItem';
+import {AddItem} from './components/AddItem';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -62,6 +63,15 @@ export default function App() {
 
    const passwordHandler = (text) => setPassword(text);
 
+   const addHandler = (text) => {
+      const item = {
+         text,
+         id: list.length + 1,
+      }
+
+      setList(prevState => [item, ...prevState])
+   }
+
    const onLogin = () => {
       Alert.alert("Credentials", `${name} + ${password} + ${value}`);
    };
@@ -91,6 +101,7 @@ export default function App() {
                <KeyboardAvoidingView // визначаємо ОС та налаштовуємо поведінку клавіатури
                   behavior={Platform.OS === "ios" ? "padding" : null} // height - не працює чогось для Андроід
                >
+                  <AddItem addHandler={addHandler}/>
                   <FlatList
                      style={styles.list}
                      data={list} // масив
@@ -113,7 +124,7 @@ export default function App() {
                      onFocus={() => setIsShowKeyboard(true)} // зімінюжм відступ форми
                   />
                   <View
-                     style={{...styles.form, marginBottom: isShowKeyboard ? 20 : 100}} // змінюєм конкретні стилі форми
+                     style={{...styles.form, marginBottom: isShowKeyboard ? 20 : 50}} // змінюєм конкретні стилі форми
                   >
                      <TextInput
                         value={name}
@@ -178,7 +189,7 @@ const styles = StyleSheet.create({
    text: {
       textAlign: 'center',
       fontFamily: FONT_FAMILY_SECONDARY,
-      fontSize: 50,
+      fontSize: 20,
    },
    innerBox: {
       borderStyle: 'solid',
